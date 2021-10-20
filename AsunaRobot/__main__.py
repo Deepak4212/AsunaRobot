@@ -74,7 +74,7 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-`Hello`(https://te.legra.ph/file/3677111d1c4e00398c8f8.jpg) `My name is` *Rimuru*
+`Hello``My name is` *Rimuru*
 `I am powerful  group management bot.
  I specialize in managing Entertainment type groups.
 You can find my list of available commands with! Hit` *🔰Commands*   
