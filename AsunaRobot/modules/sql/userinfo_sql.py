@@ -1,37 +1,37 @@
 import threading
 
-from AsunaRobot.modules import BASE, SESSION
+from AsunaRobot.modules.sql import BASE, SESSION
 from sqlalchemy import Column, Integer, UnicodeText
 
 
 class UserInfo(BASE):
-    __tablename__ = "userinfo"
+    tablename = "userinfo"
     user_id = Column(Integer, primary_key=True)
     info = Column(UnicodeText)
 
-    def __init__(self, user_id, info):
+    def init(self, user_id, info):
         self.user_id = user_id
         self.info = info
 
-    def __repr__(self):
+    def repr(self):
         return "<User info %d>" % self.user_id
 
 
 class UserBio(BASE):
-    __tablename__ = "userbio"
+    tablename = "userbio"
     user_id = Column(Integer, primary_key=True)
     bio = Column(UnicodeText)
 
-    def __init__(self, user_id, bio):
+    def init(self, user_id, bio):
         self.user_id = user_id
         self.bio = bio
 
-    def __repr__(self):
+    def repr(self):
         return "<User info %d>" % self.user_id
 
 
-UserInfo.__table__.create(checkfirst=True)
-UserBio.__table__.create(checkfirst=True)
+UserInfo.table.create(checkfirst=True)
+UserBio.table.create(checkfirst=True)
 
 INSERTION_LOCK = threading.RLock()
 
