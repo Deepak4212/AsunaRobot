@@ -306,9 +306,9 @@ def info(update: Update, context: CallbackContext):
         disaster_level_present = True
 
     if disaster_level_present:
-        text += (
-            bot.username,
-        )
+       
+        bot.username,
+        
 
     try:
         user_member = chat.get_member(user.id)
