@@ -137,6 +137,8 @@ msg.reply_text(
                 parse_mode=ParseMode.HTML,
             )
 
+           else:
+
             user = bot.get_chat(user_id)
             msg.reply_text(
                 f"{html.escape(user.first_name)}'s id is <code>{user.id}</code>.",
