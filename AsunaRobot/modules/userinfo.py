@@ -131,7 +131,6 @@ def get_id(update: Update, context: CallbackContext):
             user1 = message.reply_to_message.from_user
             user2 = message.reply_to_message.forward_from
 
-DeMOnLoRD 『₳₦ł₥Ɇ ₦₳₮łØ₦ 』 『ARCANE』 『 ÐΛR̷Ꮶ 』★DeMOnLoRD★『 ϑ ㊭ #ItsCumming, [21.10.21 15:15]
 msg.reply_text(
                 f"<b>Telegram ID:</b>,"
                 f"• {html.escape(user2.first_name)} - <code>{user2.id}</code>.\n"
@@ -259,7 +258,6 @@ def info(update: Update, context: CallbackContext):
     if chat.type != "private" and user_id != bot.id:
         _stext = "\nPresence: <code>{}</code>"
 
-DeMOnLoRD 『₳₦ł₥Ɇ ₦₳₮łØ₦ 』 『ARCANE』 『 ÐΛR̷Ꮶ 』★DeMOnLoRD★『 ϑ ㊭ #ItsCumming, [21.10.21 15:15]
 afk_st = is_user_afk(user.id)
         if afk_st:
             text += _stext.format("AFK")
@@ -375,7 +373,6 @@ def about_me(update: Update, context: CallbackContext):
 
     info = sql.get_user_me_info(user.id)
 
-DeMOnLoRD 『₳₦ł₥Ɇ ₦₳₮łØ₦ 』 『ARCANE』 『 ÐΛR̷Ꮶ 』★DeMOnLoRD★『 ϑ ㊭ #ItsCumming, [21.10.21 15:15]
 if info:
         update.effective_message.reply_text(
             f"*{user.first_name}*:\n{escape_markdown(info)}",
@@ -488,7 +485,6 @@ def set_about_bio(update: Update, context: CallbackContext):
             1,
         )  # use python's maxsplit to only remove the cmd, hence keeping newlines.
 
-DeMOnLoRD 『₳₦ł₥Ɇ ₦₳₮łØ₦ 』 『ARCANE』 『 ÐΛR̷Ꮶ 』★DeMOnLoRD★『 ϑ ㊭ #ItsCumming, [21.10.21 15:15]
 if len(bio) == 2:
             if len(bio[1]) < MAX_MESSAGE_LENGTH // 4:
                 sql.set_user_bio(user_id, bio[1])
