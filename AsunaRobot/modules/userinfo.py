@@ -23,7 +23,7 @@ from AsunaRobot import (
     dispatcher,
     sw,
 )
-from AsunaRobot.main import STATS, TOKEN, USER_INFO
+from AsunaRobot.__main__ import STATS, TOKEN, USER_INFO
 import AsunaRobot.modules.sql.userinfo_sql as sql
 from AsunaRobot.modules.disable import DisableAbleCommandHandler
 from AsunaRobot.modules.sql.global_bans_sql import is_user_gbanned
@@ -36,7 +36,7 @@ from AsunaRobot import telethn as SaitamaTelethonClient
 
 def no_by_per(totalhp, percentage):
     """
-    rtype: num of percentage from total
+    rtype: num of `percentage` from total
     eg: 1000, 10 -> 10% of 1000 (100)
     """
     return totalhp * percentage / 100
@@ -44,7 +44,7 @@ def no_by_per(totalhp, percentage):
 
 def get_percentage(totalhp, earnedhp):
     """
-    rtype: percentage of totalhp num
+    rtype: percentage of `totalhp` num
     eg: (1000, 100) will return 10%
     """
 
@@ -59,7 +59,7 @@ def hpmanager(user):
 
     if not is_user_gbanned(user.id):
 
-        # Assign new var new_hp since we need total_hp in
+        # Assign new var `new_hp` since we need `total_hp` in
         # end to calculate percentage.
         new_hp = total_hp
 
@@ -130,14 +130,14 @@ def get_id(update: Update, context: CallbackContext):
             user1 = message.reply_to_message.from_user
             user2 = message.reply_to_message.forward_from
 
-msg.reply_text(
+            msg.reply_text(
                 f"<b>Telegram ID:</b>,"
                 f"• {html.escape(user2.first_name)} - <code>{user2.id}</code>.\n"
                 f"• {html.escape(user1.first_name)} - <code>{user1.id}</code>.",
                 parse_mode=ParseMode.HTML,
             )
 
-           else:
+        else:
 
             user = bot.get_chat(user_id)
             msg.reply_text(
@@ -180,20 +180,20 @@ async def group_info(event) -> None:
             "Can't for some reason, maybe it is a private one or that I am banned there.",
         )
         return
-    msg = f"ID: {entity.id}"
-    msg += f"\n**Title**: {entity.title}"
-    msg += f"\n**Datacenter**: {entity.photo.dc_id}"
-    msg += f"\n**Video PFP**: {entity.photo.has_video}"
-    msg += f"\n**Supergroup**: {entity.megagroup}"
-    msg += f"\n**Restricted**: {entity.restricted}"
-    msg += f"\n**Scam**: {entity.scam}"
-    msg += f"\n**Slowmode**: {entity.slowmode_enabled}"
+    msg = f"**ID**: `{entity.id}`"
+    msg += f"\n**Title**: `{entity.title}`"
+    msg += f"\n**Datacenter**: `{entity.photo.dc_id}`"
+    msg += f"\n**Video PFP**: `{entity.photo.has_video}`"
+    msg += f"\n**Supergroup**: `{entity.megagroup}`"
+    msg += f"\n**Restricted**: `{entity.restricted}`"
+    msg += f"\n**Scam**: `{entity.scam}`"
+    msg += f"\n**Slowmode**: `{entity.slowmode_enabled}`"
     if entity.username:
         msg += f"\n**Username**: {entity.username}"
-    msg += "\n\n**Member Stats:"
+    msg += "\n\n**Member Stats:**"
     msg += f"\n`Admins:` `{len(totallist)}`"
     msg += f"\n`Users`: `{totallist.total}`"
-    msg += "\n\n**Admins List:"
+    msg += "\n\n**Admins List:**"
     for x in totallist:
         msg += f"\n• [{x.id}](tg://user?id={x.id})"
     msg += f"\n\n**Description**:\n`{ch_full.full_chat.about}`"
@@ -257,7 +257,7 @@ def info(update: Update, context: CallbackContext):
     if chat.type != "private" and user_id != bot.id:
         _stext = "\nPresence: <code>{}</code>"
 
-afk_st = is_user_afk(user.id)
+        afk_st = is_user_afk(user.id)
         if afk_st:
             text += _stext.format("AFK")
         else:
@@ -306,9 +306,9 @@ afk_st = is_user_afk(user.id)
         disaster_level_present = True
 
     if disaster_level_present:
-       
-        bot.username,
-        
+        text += ' [<a href="https://t.me/OnePunchUpdates/155">?</a>]'.format(
+            bot.username,
+        )
 
     try:
         user_member = chat.get_member(user.id)
@@ -325,9 +325,9 @@ afk_st = is_user_afk(user.id)
 
     for mod in USER_INFO:
         try:
-            mod_info = mod.user_info(user.id).strip()
+            mod_info = mod.__user_info__(user.id).strip()
         except TypeError:
-            mod_info = mod.user_info(user.id, chat.id).strip()
+            mod_info = mod.__user_info__(user.id, chat.id).strip()
         if mod_info:
             text += "\n\n" + mod_info
 
@@ -372,7 +372,7 @@ def about_me(update: Update, context: CallbackContext):
 
     info = sql.get_user_me_info(user.id)
 
-if info:
+    if info:
         update.effective_message.reply_text(
             f"*{user.first_name}*:\n{escape_markdown(info)}",
             parse_mode=ParseMode.MARKDOWN,
@@ -420,7 +420,7 @@ def set_about_me(update: Update, context: CallbackContext):
 
 @sudo_plus
 def stats(update: Update, context: CallbackContext):
-    stats = "<b>📊 Current stats:</b>\n" + "\n".join([mod.stats() for mod in STATS])
+    stats = "<b>📊 Current stats:</b>\n" + "\n".join([mod.__stats__() for mod in STATS])
     result = re.sub(r"(\d+)", r"<code>\1</code>", stats)
     update.effective_message.reply_text(result, parse_mode=ParseMode.HTML)
 
@@ -484,7 +484,7 @@ def set_about_bio(update: Update, context: CallbackContext):
             1,
         )  # use python's maxsplit to only remove the cmd, hence keeping newlines.
 
-if len(bio) == 2:
+        if len(bio) == 2:
             if len(bio[1]) < MAX_MESSAGE_LENGTH // 4:
                 sql.set_user_bio(user_id, bio[1])
                 message.reply_text(
@@ -501,7 +501,7 @@ if len(bio) == 2:
         message.reply_text("Reply to someone to set their bio!")
 
 
-def user_info(user_id):
+def __user_info__(user_id):
     bio = html.escape(sql.get_user_bio(user_id) or "")
     me = html.escape(sql.get_user_me_info(user_id) or "")
     result = ""
@@ -513,28 +513,24 @@ def user_info(user_id):
     return result
 
 
-help = """
+__help__ = """
 *ID:*
- • /id*:* get the current group id. If used by replying to a message, gets that user's id.
- • /gifid*:* reply to a gif to me to tell you its file ID.
-
+ • `/id`*:* get the current group id. If used by replying to a message, gets that user's id.
+ • `/gifid`*:* reply to a gif to me to tell you its file ID.
 *Self addded information:*
- • /setme <text>*:* will set your info
- • /me*:* will get your or another user's info.
+ • `/setme <text>`*:* will set your info
+ • `/me`*:* will get your or another user's info.
 Examples:
- /setme I am a wolf.
- /me @username(defaults to yours if no user specified)
-
+ `/setme I am a wolf.`
+ `/me @username(defaults to yours if no user specified)`
 *Information others add on you:*
-• /bio*:* will get your or another user's bio. This cannot be set by yourself.
-• /setbio <text>*:* while replying, will save another user's bio
+• `/bio`*:* will get your or another user's bio. This cannot be set by yourself.
+• `/setbio <text>`*:* while replying, will save another user's bio
 Examples:
- /bio @username(defaults to yours if not specified).
- /setbio This user is a wolf (reply to the user)
-
+ `/bio @username(defaults to yours if not specified).`
+ `/setbio This user is a wolf` (reply to the user)
 *Overall Information about you:*
- • /info*:* get information about a user.
-
+ • `/info`*:* get information about a user.
 *What is that health thingy?*
  Come and see [HP System explained](https://t.me/OnePunchUpdates/192)
 """
@@ -557,9 +553,9 @@ dispatcher.add_handler(GET_BIO_HANDLER)
 dispatcher.add_handler(SET_ABOUT_HANDLER)
 dispatcher.add_handler(GET_ABOUT_HANDLER)
 
-mod_name = "Info"
-command_list = ["setbio", "bio", "setme", "me", "info"]
-handlers = [
+__mod_name__ = "Info"
+__command_list__ = ["setbio", "bio", "setme", "me", "info"]
+__handlers__ = [
     ID_HANDLER,
     GIFID_HANDLER,
     INFO_HANDLER,
