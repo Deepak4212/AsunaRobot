@@ -5,33 +5,33 @@ from sqlalchemy import Column, Integer, UnicodeText
 
 
 class UserInfo(BASE):
-    tablename = "userinfo"
+    __tablename__ = "userinfo"
     user_id = Column(Integer, primary_key=True)
     info = Column(UnicodeText)
 
-    def init(self, user_id, info):
+    def __init__(self, user_id, info):
         self.user_id = user_id
         self.info = info
 
-    def repr(self):
+    def __repr__(self):
         return "<User info %d>" % self.user_id
 
 
 class UserBio(BASE):
-    tablename = "userbio"
+    __tablename__ = "userbio"
     user_id = Column(Integer, primary_key=True)
     bio = Column(UnicodeText)
 
-    def init(self, user_id, bio):
+    def __init__(self, user_id, bio):
         self.user_id = user_id
         self.bio = bio
 
-    def repr(self):
+    def __repr__(self):
         return "<User info %d>" % self.user_id
 
 
-UserInfo.table.create(checkfirst=True)
-UserBio.table.create(checkfirst=True)
+UserInfo.__table__.create(checkfirst=True)
+UserBio.__table__.create(checkfirst=True)
 
 INSERTION_LOCK = threading.RLock()
 
